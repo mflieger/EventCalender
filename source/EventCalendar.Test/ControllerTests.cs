@@ -389,7 +389,7 @@ namespace EventCalendar.Test
             // Act
             bool ok = controller.UnregisterPersonForEvent(participator1, ev1);
             // Assert
-            Assert.IsTrue((ok));
+            Assert.IsTrue(ok);
         }
 
         [TestMethod()]
@@ -472,7 +472,7 @@ namespace EventCalendar.Test
         }
 
         [TestMethod()]
-        public void RegisterPersonForEvent_RegistrationTwice_ShouldReturnTrue()
+        public void RegisterPersonForEvent_RegistrationTwice_ShouldReturnFalse()
         {
             // Arrange
             Controller controller = new Controller();
@@ -488,7 +488,7 @@ namespace EventCalendar.Test
         }
 
         [TestMethod()]
-        public void RegisterPersonForEvent_PersonNull_ShouldReturnTrue()
+        public void RegisterPersonForEvent_PersonNull_ShouldReturnFalse()
         {
             // Arrange
             Controller controller = new Controller();
@@ -502,7 +502,7 @@ namespace EventCalendar.Test
         }
 
         [TestMethod()]
-        public void RegisterPersonForEvent_EventNull_ShouldReturnTrue()
+        public void RegisterPersonForEvent_EventNull_ShouldReturnFalse()
         {
             // Arrange
             Controller controller = new Controller();
