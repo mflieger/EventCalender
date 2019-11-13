@@ -31,30 +31,24 @@ namespace EventCalendar.Logic
         /// <returns>Wurde die Veranstaltung angelegt</returns>
         public bool CreateEvent(Person invitor, string title, DateTime dateTime, int maxParticipators = 0)
         {
-            if (invitor == null)
-                throw new ArgumentNullException(nameof(invitor));
-
-            if (title == null)
-                throw new ArgumentNullException(nameof(title));
-
-            if (dateTime == null)
-                throw new ArgumentNullException(nameof(dateTime));
-
             bool result = false;
 
-            if (DateTime.Now < dateTime && GetEvent(title) == null)
+            if(invitor != null && title != null && dateTime != null && title.Length > 0)
             {
-                if (maxParticipators == 0)
+                if (DateTime.Now < dateTime && GetEvent(title) == null)
                 {
-                    Event newEvent = new Event(invitor, title, dateTime);
-                    _events.Add(newEvent);
-                    result = true;
-                }
-                else
-                {
-                    Event newEvent = new LimitedEvent(invitor, title, dateTime, maxParticipators);
-                    _events.Add(newEvent);
-                    result = true;
+                    if (maxParticipators == 0)
+                    {
+                        Event newEvent = new Event(invitor, title, dateTime);
+                        _events.Add(newEvent);
+                        result = true;
+                    }
+                    else
+                    {
+                        Event newEvent = new LimitedEvent(invitor, title, dateTime, maxParticipators);
+                        _events.Add(newEvent);
+                        result = true;
+                    }
                 }
             }
 
@@ -69,17 +63,17 @@ namespace EventCalendar.Logic
         /// <returns>Event oder null, falls es keine Veranstaltung mit dem Titel gibt</returns>
         public Event GetEvent(string title)
         {
-            if (title == null)
-                throw new ArgumentNullException(nameof(title));
-
             Event resultEvent = null;
 
-            foreach (Event ev in _events)
+            if(title != null)
             {
-                if (title == ev.Title)
+                foreach (Event ev in _events)
                 {
-                    resultEvent = ev;
-                    break;
+                    if (title == ev.Title)
+                    {
+                        resultEvent = ev;
+                        break;
+                    }
                 }
             }
 
@@ -95,11 +89,10 @@ namespace EventCalendar.Logic
         /// <returns>War die Registrierung erfolgreich?</returns>
         public bool RegisterPersonForEvent(Person person, Event ev)
         {
-            if (person == null)
-                throw new ArgumentNullException(nameof(person));
-
-            if (ev == null)
-                throw new ArgumentNullException(nameof(ev));
+            if (person == null || ev == null)
+            {
+                return false;
+            }
 
             bool result = false;
             Event currentEvent = GetEvent(ev.Title);
@@ -147,7 +140,9 @@ namespace EventCalendar.Logic
         public IList<Person> GetParticipatorsForEvent(Event ev)
         {
             if (ev == null)
-                throw new ArgumentNullException(nameof(ev));
+            {
+                return null;
+            }
 
             IList<Person> resultList = null;
             Event currentEvent = GetEvent(ev.Title);
@@ -168,7 +163,9 @@ namespace EventCalendar.Logic
         public List<Event> GetEventsForPerson(Person person)
         {
             if (person == null)
-                throw new ArgumentNullException(nameof(person));
+            {
+                return null;
+            }
 
             List<Event> resultList = new List<Event>();
 
@@ -191,7 +188,9 @@ namespace EventCalendar.Logic
         public int CountEventsForPerson(Person participator)
         {
             if (participator == null)
-                throw new ArgumentNullException(nameof(participator));
+            {
+                return 0;
+            }
 
             List<Event> ev = GetEventsForPerson(participator);
 
